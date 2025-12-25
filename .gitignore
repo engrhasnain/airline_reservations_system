@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+app.db
+.idea/
+.vscode/
+__pycache__/
+node_modules/
+.env
+/venv
+venv
