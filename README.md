@@ -12,8 +12,6 @@ Next steps: implement endpoints, write tests, and wire up migrations.
 
 ## API Endpoints (current)
 
-> Summary: `app.api.api_router` currently includes the `auth`, `flights`, and `bookings` routers. Other route modules exist in `app.api.routes` (e.g., `payments`, `tickets`, `admin`, `users`) but are not yet included in `api_router`.
-
 Authentication
 - `POST /auth/register` — Register a new user (creates account).
 - `POST /auth/login` — Authenticate a user and return a JWT access token.
