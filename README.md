@@ -6,18 +6,14 @@ Structure:
 - backend — FastAPI application and database models
 - frontend — static frontend skeleton
 - docs — project docs and API documentation
-- docker — Dockerfile and docker-compose configuration
 
-Next steps: implement endpoints, write tests, and wire up migrations.
+Next steps: implement endpoints
 
 ## API Endpoints (current)
 
 Authentication
 - `POST /auth/register` — Register a new user (creates account).
 - `POST /auth/login` — Authenticate a user and return a JWT access token.
-
-Users (module present; not included in `api_router`)
-- `GET /users/me` — Retrieve the currently authenticated user's profile (placeholder).
 
 Flights (included)
 - `POST /flights/` — (admin) Create a new flight.
@@ -32,13 +28,13 @@ Bookings (included)
 - `GET /bookings/` — (admin) List all bookings.
 - `DELETE /bookings/{booking_id}` — Cancel a specific booking (authentication required).
 
-Payments (module present; not included in `api_router`)
+Payments (module present; included in `api_router`)
 - `POST /payments/` — Process a payment for a booking (expects `booking_id` and `amount`).
 
 Tickets (module present; not included in `api_router`)
 - `GET /tickets/{booking_id}` — Retrieve or generate a ticket for a paid booking (authentication required).
 
-Admin (module present; not included in `api_router`)
+Admin (module present; included in `api_router`)
 - `GET /admin/stats` — Basic admin stats (users/bookings).
 
 > Note: Protected endpoints expect a Bearer token in the `Authorization` header. Admin-only endpoints use the `admin_required` dependency.
