@@ -10,6 +10,29 @@ Structure:
 
 Next steps: implement endpoints, write tests, and wire up migrations.
 
+Frontend (React)
+- A minimal Vite + React app is scaffolded under `frontend/react-app`.
+- To run locally:
+  - cd `frontend/react-app`
+  - npm install
+  - npm run dev (opens on port 3000, proxies `/api` to backend `http://localhost:8000`)
+
+Backend (FastAPI)
+- Create a Python virtual environment and install requirements:
+  - python -m venv venv
+  - venv\Scripts\activate (Windows)
+  - pip install -r backend/requirements.txt
+- Configure `.env` in `backend/.env` (DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES)
+- Run the app:
+  - cd backend
+  - uvicorn app.main:app --reload
+- Run tests:
+  - pytest backend/app/tests
+
+Docker
+- A Dockerfile and docker-compose.yml are provided under `docker/` for containerized runs.
+
+
 ## API Endpoints (current)
 
 > Summary: `app.api.api_router` currently includes the `auth`, `flights`, and `bookings` routers. Other route modules exist in `app.api.routes` (e.g., `payments`, `tickets`, `admin`, `users`) but are not yet included in `api_router`.

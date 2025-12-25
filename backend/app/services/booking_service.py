@@ -7,6 +7,12 @@ from app.crud.seat import get_available_seat
 from app.crud.booking import create_booking
 
 def book_seat(db: Session, flight_id: int, user_email: str):
+    # Prevent duplicate booking for same user & flight
+    from app.models.booking import Booking
+    existing = db.query(Booking).filter(Booking.user_email == user_email, Booking.flight_id == flight_id).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="User already has a booking for this flight")
+
     seat = get_available_seat(db, flight_id)
     if not seat:
         raise HTTPException(status_code=400, detail="No seats available")

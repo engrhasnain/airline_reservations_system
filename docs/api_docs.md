@@ -13,7 +13,7 @@ Flights
 - `POST /flights/` — (admin) Create a flight (FlightCreate). Returns created flight.
 - `GET /flights/` — List available flights (pagination via `skip`, `limit`).
 - `GET /flights/search?origin=&destination=` — Search flights by origin and destination (partial matches allowed).
-- `GET /flights/search/for?origin=&destination=&date=` — Search flights on a specific date and with available seats (`date` format: `YYYY-MM-DD`).
+- `GET /flights/search/for?origin=&destination=&date=` — Search flights on a specific date with available seats (`date` format: `YYYY-MM-DD`).
 - `GET /flights/stats` — (admin) Booking counts grouped by flight.
 
 Bookings

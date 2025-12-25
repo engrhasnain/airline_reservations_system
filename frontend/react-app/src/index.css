@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small customizations */
+body { @apply bg-slate-50 text-slate-800 }
+.header-brand { @apply text-2xl font-bold text-emerald-600 }
+.card { @apply bg-white shadow rounded-lg p-4 }

@@ -10,6 +10,10 @@ class BookingResponse(BaseModel):
     flight_id: int
     seat_id: int
     booked_at: datetime
+    payment_status: str
+    flight_number: str | None = None
+    origin: str | None = None
+    destination: str | None = None
 
     class Config:
         orm_mode = True

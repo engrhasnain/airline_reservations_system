@@ -22,7 +22,41 @@ def my_bookings(
     db: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
-    return get_user_bookings(db, user["sub"])
+    from app.models.booking import Booking
+    from app.models.flight import Flight
+
+    results = (
+        db.query(
+            Booking.id,
+            Booking.user_email,
+            Booking.flight_id,
+            Booking.seat_id,
+            Booking.booked_at,
+            Booking.payment_status,
+            Flight.flight_number,
+            Flight.origin,
+            Flight.destination,
+        )
+        .join(Flight, Booking.flight_id == Flight.id)
+        .filter(Booking.user_email == user["sub"])
+        .all()
+    )
+
+    # Convert to list of dicts matching BookingResponse
+    return [
+        {
+            "id": r[0],
+            "user_email": r[1],
+            "flight_id": r[2],
+            "seat_id": r[3],
+            "booked_at": r[4],
+            "payment_status": r[5],
+            "flight_number": r[6],
+            "origin": r[7],
+            "destination": r[8],
+        }
+        for r in results
+    ]
 
 @router.get("/", response_model=list[BookingResponse], dependencies=[Depends(admin_required)])
 def all_bookings(db: Session = Depends(get_db)):

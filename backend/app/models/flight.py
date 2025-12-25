@@ -12,3 +12,4 @@ class Flight(Base):
     departure_time = Column(DateTime, nullable=False)
     arrival_time = Column(DateTime, nullable=False)
     total_seats = Column(Integer, nullable=False)
+    status = Column(String, nullable=False, default="ACTIVE")
