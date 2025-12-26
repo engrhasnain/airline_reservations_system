@@ -5,7 +5,7 @@ from app.database.base import Base
 from app.api.api_router import api_router
 
 # Import models so SQLAlchemy sees them
-from app.models import user, flight, seat, booking
+from app.models import user, flight, seat, booking, password_reset
 
 
 

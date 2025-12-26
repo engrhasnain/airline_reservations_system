@@ -92,3 +92,38 @@ def test_register_and_login_and_flow():
     assert len(target) == 1
     assert target[0]['payment_status'] == 'REFUNDED'
 
+    # Admin should be able to delete the flight even if payments existed previously
+    res = client.delete(f'/flights/{flight_id}', headers=headers)
+    assert res.status_code == 200
+
+
+def test_password_reset_flow():
+    # ensure db exists
+    from app.database.session import SessionLocal
+    from app.crud.user import get_user_by_email
+    from app.core.security import verify_password
+
+    db = SessionLocal()
+
+    # create a test user
+    from app.crud.user import create_user
+    u = create_user(db, type('U', (), {'full_name':'ResetTest','email':'reset@example.com','password':'oldpass'}))
+
+    # request password reset
+    res = client.post('/auth/forgot', json={'email': 'reset@example.com'})
+    assert res.status_code == 200
+
+    # fetch token from password_resets table
+    from app.models.password_reset import PasswordReset
+    pr = db.query(PasswordReset).filter(PasswordReset.email == 'reset@example.com').first()
+    assert pr is not None
+
+    # reset password
+    res = client.post('/auth/reset', json={'email': 'reset@example.com', 'token': pr.token, 'new_password': 'newpass'})
+    assert res.status_code == 200
+
+    # ensure password is updated
+    u2 = get_user_by_email(db, 'reset@example.com')
+    assert verify_password('newpass', u2.hashed_password)
+
+

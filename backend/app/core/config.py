@@ -20,4 +20,7 @@ class Settings:
     SMTP_USE_SSL: bool = os.getenv('SMTP_USE_SSL', '1') == '1'
     EMAIL_FROM: str = os.getenv('EMAIL_FROM', SMTP_USER)
 
+    # Frontend URL used to build password reset links (optional)
+    FRONTEND_URL: str = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+
 settings = Settings()

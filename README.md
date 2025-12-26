@@ -78,6 +78,11 @@ Payments (module present; included in `api_router`)
 Tickets (module present; not included in `api_router`)
 - `GET /tickets/{booking_id}` — Retrieve or generate a ticket for a paid booking (authentication required).
 
+Password reset
+- `POST /auth/forgot` — Request a password reset email (body: `{ email }`).
+- `POST /auth/reset` — Reset password using token (body: `{ email, token, new_password }`).
+
+
 Admin (module present; included in `api_router`)
 - `GET /admin/stats` — Basic admin stats (users/bookings).
 

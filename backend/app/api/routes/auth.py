@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 
 from app.database.session import get_db
 from app.schemas.user import UserCreate
-from app.schemas.auth import LoginRequest, Token
+from app.schemas.auth import LoginRequest, Token, ForgotRequest, ResetRequest
 from app.crud.user import create_user, get_user_by_email
 from app.core.security import verify_password, create_access_token
-
+from app.core.config import settings
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register")
@@ -72,3 +72,53 @@ def verify_otp_route(data: VerifyRequest, db: Session = Depends(get_db)):
         pass
 
     return {"access_token": token}
+
+
+@router.post('/forgot')
+def forgot_password(data: ForgotRequest, db: Session = Depends(get_db)):
+    from app.services.password_reset_service import create_reset_token
+    from app.services.email_service import send_email
+
+    user = get_user_by_email(db, data.email)
+    # Do not reveal whether the email exists
+    if not user:
+        return {"detail": "reset_sent"}
+
+    token = create_reset_token(db, user.email)
+    frontend = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+    link = f"{frontend}/reset-password?email={user.email}&token={token}"
+    body = f"To reset your password, click the link below (valid for 30 minutes):\n\n{link}"
+    try:
+        send_email(user.email, "Password reset", body)
+    except Exception:
+        pass
+
+    return {"detail": "reset_sent"}
+
+
+@router.post('/reset')
+def reset_password(data: ResetRequest, db: Session = Depends(get_db)):
+    from app.services.password_reset_service import verify_reset_token, consume_reset_token
+    from app.core.security import hash_password
+    from app.services.email_service import send_email
+
+    ok = verify_reset_token(db, data.email, data.token)
+    if not ok:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
+
+    user = get_user_by_email(db, data.email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.hashed_password = hash_password(data.new_password)
+    db.commit()
+
+    # consume token
+    consume_reset_token(db, data.token)
+
+    try:
+        send_email(user.email, "Password changed", "Your account password has been changed successfully.")
+    except Exception:
+        pass
+
+    return {"detail": "password_reset"}

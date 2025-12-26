@@ -35,6 +35,14 @@ export async function verifyOtp(data){
   return request('/auth/verify', { method: 'POST', body: JSON.stringify(data) })
 }
 
+export async function forgotPassword(data){
+  return request('/auth/forgot', { method: 'POST', body: JSON.stringify(data) })
+}
+
+export async function resetPassword(data){
+  return request('/auth/reset', { method: 'POST', body: JSON.stringify(data) })
+}
+
 export async function listFlights(){
   return request('/flights/')
 }

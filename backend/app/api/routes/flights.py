@@ -48,6 +48,7 @@ def flight_stats(db: Session = Depends(get_db)):
             func.count(Booking.id).label("total_bookings")
         )
         .outerjoin(Booking)
+        .filter(Flight.status != 'CANCELLED')
         .group_by(Flight.flight_number)
         .all()
     )
