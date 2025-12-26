@@ -12,7 +12,7 @@ class Booking(Base):
     seat_id = Column(Integer, ForeignKey("seats.id"))
     booked_at = Column(DateTime, default=datetime.utcnow)
     payment_status = Column(String, default="PENDING")
-
+    status = Column(String, default="ACTIVE")
 
     flight = relationship("Flight")
     seat = relationship("Seat")

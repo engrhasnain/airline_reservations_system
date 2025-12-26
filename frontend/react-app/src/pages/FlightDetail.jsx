@@ -20,7 +20,7 @@ export default function FlightDetail(){
     async function checkBooking(){
       try{
         const bookings = await fetchBookings()
-        const b = bookings?.find(x => x.flight_id === flight.id)
+        const b = bookings?.find(x => x.flight_id === flight.id && x.status !== 'CANCELLED')
         setUserBooking(b || null)
       }catch(err){
         setUserBooking(null)

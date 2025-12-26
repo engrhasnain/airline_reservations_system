@@ -33,6 +33,7 @@ def my_bookings(
             Booking.seat_id,
             Booking.booked_at,
             Booking.payment_status,
+            Booking.status,
             Flight.flight_number,
             Flight.origin,
             Flight.destination,
@@ -51,9 +52,10 @@ def my_bookings(
             "seat_id": r[3],
             "booked_at": r[4],
             "payment_status": r[5],
-            "flight_number": r[6],
-            "origin": r[7],
-            "destination": r[8],
+            "status": r[6],
+            "flight_number": r[7],
+            "origin": r[8],
+            "destination": r[9],
         }
         for r in results
     ]

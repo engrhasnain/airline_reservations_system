@@ -64,18 +64,34 @@ export default function Dashboard(){
                   <td className="py-2">{b.flight_number} <div className="text-xs text-slate-500">{b.origin} → {b.destination}</div></td>
                   <td className="py-2">{b.seat_id}</td>
                   <td className="py-2">{new Date(b.booked_at).toLocaleString()}</td>
-                  <td className="py-2">{b.payment_status}</td>
+                  <td className="py-2">{b.payment_status}{b.status === 'CANCELLED' ? ' / CANCELLED' : ''}</td>
                   <td className="py-2">
                     <a href={`/flights/${b.flight_id}`} className="text-emerald-600 mr-3">View flight</a>
-                    {b.payment_status === 'PAID' ? (
-                      <button disabled={downloadProcessing === b.id} onClick={()=>downloadTicket(b)} className="text-slate-600">{downloadProcessing === b.id ? 'Downloading...' : 'Download ticket'}</button>
+                    {b.status === 'CANCELLED' ? (
+                      <span className="text-rose-600 font-semibold">Cancelled by you</span>
                     ) : (
                       <>
-                        <button disabled={processing === b.id} onClick={()=>{
-                          setProcessing(b.id)
-                          setModalBookingId(b.id)
-                        }} className="text-emerald-600">Pay</button>
-                        <CheckoutModal isOpen={modalBookingId === b.id} bookingId={b.id} onClose={() => { setModalBookingId(null); setProcessing(null) }} onPaid={() => { fetchBookings().then(setBookings).catch(()=>setBookings([])) }} />
+                        {b.payment_status === 'PAID' ? (
+                          <button disabled={downloadProcessing === b.id} onClick={()=>downloadTicket(b)} className="text-slate-600">{downloadProcessing === b.id ? 'Downloading...' : 'Download ticket'}</button>
+                        ) : (
+                          <>
+                            <button disabled={processing === b.id} onClick={()=>{
+                              setProcessing(b.id)
+                              setModalBookingId(b.id)
+                            }} className="text-emerald-600">Pay</button>
+                            <CheckoutModal isOpen={modalBookingId === b.id} bookingId={b.id} onClose={() => { setModalBookingId(null); setProcessing(null) }} onPaid={() => { fetchBookings().then(setBookings).catch(()=>setBookings([])) }} />
+                          </>
+                        )}
+                        <button onClick={async()=>{
+                          if (!confirm('Cancel booking #' + b.id + '?')) return
+                          try{
+                            await api(`/bookings/${b.id}`, { method: 'DELETE' })
+                            alert('Booking cancelled')
+                            fetchBookings().then(setBookings).catch(()=>setBookings([]))
+                          }catch(err){
+                            alert('Cancel failed: ' + err.message)
+                          }
+                        }} className="ml-4 text-rose-600">Cancel</button>
                       </>
                     )}
                   </td>

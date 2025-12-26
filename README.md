@@ -22,6 +22,27 @@ Backend (FastAPI)
   - venv\Scripts\activate (Windows)
   - pip install -r backend/requirements.txt
 - Configure `.env` in `backend/.env` (DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES)
+
+Email / SMTP (optional)
+- The app can send emails (login OTP, cancellation/refund notifications) when SMTP is configured.
+- Add SMTP variables to `backend/.env`:
+  - `SMTP_HOST` (e.g. `smtp.gmail.com`)
+  - `SMTP_PORT` (e.g. `465` for SMTPS or `587` for STARTTLS)
+  - `SMTP_USER` (email address)
+  - `SMTP_PASSWORD` (SMTP password or app password)
+  - `SMTP_USE_SSL` (`1` for SMTPS, `0` for STARTTLS)
+  - `EMAIL_FROM` (optional, defaults to `SMTP_USER`)
+- Example (SMTPS):
+  ```dotenv
+  SMTP_HOST=smtp.gmail.com
+  SMTP_PORT=465
+  SMTP_USER=your-email@example.com
+  SMTP_PASSWORD=your-app-password
+  SMTP_USE_SSL=1
+  EMAIL_FROM=your-email@example.com
+  ```
+- After editing `.env`, restart the backend to pick up new settings.
+
 - Run the app:
   - cd backend
   - uvicorn app.main:app --reload

@@ -11,6 +11,7 @@ class BookingResponse(BaseModel):
     seat_id: int
     booked_at: datetime
     payment_status: str
+    status: str
     flight_number: str | None = None
     origin: str | None = None
     destination: str | None = None

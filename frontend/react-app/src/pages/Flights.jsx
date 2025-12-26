@@ -23,7 +23,10 @@ export default function Flights(){
     try{
       const bs = await fetchBookings()
       const map = {}
-      (bs || []).forEach(b => { map[b.flight_id] = b })
+      (bs || []).forEach(b => {
+        // Ignore cancelled bookings when preventing new bookings
+        if (b.status !== 'CANCELLED') map[b.flight_id] = b
+      })
       setUserBookingsMap(map)
     }catch(err){
       setUserBookingsMap({})

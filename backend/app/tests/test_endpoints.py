@@ -80,3 +80,15 @@ def test_register_and_login_and_flow():
     res = client.get(f'/tickets/{booking_id}', headers=headers_user)
     assert res.status_code == 200
 
+    # cancelling a paid booking should succeed and issue a refund
+    res = client.delete(f'/bookings/{booking_id}', headers=headers_user)
+    assert res.status_code == 200
+
+    # confirm booking shows refunded payment status
+    res = client.get('/bookings/me', headers=headers_user)
+    assert res.status_code == 200
+    bs = res.json()
+    target = [b for b in bs if b['id'] == booking_id]
+    assert len(target) == 1
+    assert target[0]['payment_status'] == 'REFUNDED'
+

@@ -1,5 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '/api'
-import { getToken } from './utils/auth'
+import { getToken, logout } from './utils/auth'
 
 async function request(path, options={}){
   const token = getToken()
@@ -10,6 +10,14 @@ async function request(path, options={}){
   const res = await fetch(API_BASE + path, { ...options, headers })
   if (!res.ok){
     const text = await res.text()
+    // If token expired/invalid, ensure we log the user out and redirect to login
+    if (res.status === 401){
+      try{
+        // clear token and redirect
+        logout()
+        window.location.href = '/login'
+      }catch(e){/* ignore */}
+    }
     throw new Error(text || res.statusText)
   }
   return res.json().catch(()=>null)
@@ -21,6 +29,10 @@ export async function register(user){
 
 export async function login(data){
   return request('/auth/login', {method: 'POST', body: JSON.stringify(data)})
+}
+
+export async function verifyOtp(data){
+  return request('/auth/verify', { method: 'POST', body: JSON.stringify(data) })
 }
 
 export async function listFlights(){
