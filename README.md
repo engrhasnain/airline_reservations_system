@@ -2,6 +2,8 @@
 
 This repository contains a sample Airline Reservation System with a FastAPI backend and a simple static frontend.
 
+> Just want to run the app without touching the command line? See [HOW_TO_RUN.txt](HOW_TO_RUN.txt).
+
 Structure:
 - backend — FastAPI application and database models
 - frontend — static frontend skeleton
@@ -18,10 +20,13 @@ Frontend (React)
 
 Backend (FastAPI)
 - Create a Python virtual environment and install requirements:
+  - cd backend
   - python -m venv venv
   - venv\Scripts\activate (Windows)
-  - pip install -r backend/requirements.txt
-- Configure `.env` in `backend/.env` (DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES)
+  - pip install -r requirements.txt
+- Configure `.env` in `backend/.env` (copy `backend/.env.example`). By default the app uses SQLite
+  (`DATABASE_URL=sqlite:///./airline.db`) — no database server to install or configure. The `airline.db`
+  file and its tables are created automatically the first time the backend starts.
 
 Email / SMTP (optional)
 - The app can send emails (login OTP, cancellation/refund notifications) when SMTP is configured.
@@ -48,10 +53,6 @@ Email / SMTP (optional)
   - uvicorn app.main:app --reload
 - Run tests:
   - pytest backend/app/tests
-
-Docker
-- A Dockerfile and docker-compose.yml are provided under `docker/` for containerized runs.
-
 
 ## API Endpoints (current)
 

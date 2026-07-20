@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.core.config import settings
-from app.database.session import engine
+from app.database.session import engine, SessionLocal
 from app.database.base import Base
 from app.api.api_router import api_router
 
@@ -10,6 +10,15 @@ from app.models import user, flight, seat, booking, password_reset
 
 
 Base.metadata.create_all(bind=engine)
+
+from app.database.seed import seed_flights, seed_admin
+
+_seed_db = SessionLocal()
+try:
+    seed_flights(_seed_db)
+    seed_admin(_seed_db)
+finally:
+    _seed_db.close()
 
 app = FastAPI(title=settings.APP_NAME)
 

@@ -1,0 +1,52 @@
+HOW TO RUN THIS APP (Airline Reservation System)
+================================
+
+STEP 1 - Install two free programs (skip any you already have)
+------------------------------------------------------------
+1. Python:  https://www.python.org/downloads/
+   - Click "Download Python" and run the installer.
+   - IMPORTANT: On the very first install screen, check the box
+     that says "Add python.exe to PATH" before clicking Install.
+
+2. Node.js (choose the "LTS" version): https://nodejs.org/
+   - Run the installer and click Next/Next/Install with the defaults.
+
+Restart the computer after installing if this is the first time
+either program has been installed.
+
+(Tip: if you're comfortable with Command Prompt, you can skip the manual
+downloads above and instead double-click "install-requirements.bat" in
+this folder - it installs both automatically.)
+
+STEP 2 - Get the project
+------------------------------------------------------------
+1. Go to: https://github.com/engrhasnain/airline_reservations_system
+2. Click the green "Code" button, then "Download ZIP".
+3. Find the downloaded ZIP file (usually in the Downloads folder),
+   right-click it, and choose "Extract All...".
+4. Open the extracted folder. You should see this file (HOW_TO_RUN.txt)
+   along with "start-backend.bat" and "start-frontend.bat".
+
+STEP 3 - Run it
+------------------------------------------------------------
+1. Double-click "start-backend.bat".
+   A black window will open. The first time, it will take a minute
+   to set itself up. Wait until you see:
+        Uvicorn running on http://127.0.0.1:8000
+   Leave this window open - do not close it.
+
+2. Double-click "start-frontend.bat".
+   Another black window will open. The first time, it will take a
+   few minutes to set itself up. Wait until you see:
+        Local:  http://localhost:3000
+   Leave this window open too.
+
+3. Open a web browser (Chrome/Edge) and go to:
+        http://localhost:3000
+
+The app should now be up and running! Flights are already loaded in,
+so you can just register an account, log in, and start booking.
+
+To stop it later, just close both black windows.
+To run it again another day, just double-click the two .bat files
+again (setup will be skipped since it's already done).

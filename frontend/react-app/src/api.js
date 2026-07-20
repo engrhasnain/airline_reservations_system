@@ -31,10 +31,6 @@ export async function login(data){
   return request('/auth/login', {method: 'POST', body: JSON.stringify(data)})
 }
 
-export async function verifyOtp(data){
-  return request('/auth/verify', { method: 'POST', body: JSON.stringify(data) })
-}
-
 export async function forgotPassword(data){
   return request('/auth/forgot', { method: 'POST', body: JSON.stringify(data) })
 }
